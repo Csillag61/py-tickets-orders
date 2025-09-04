@@ -70,7 +70,10 @@ class MovieSessionViewSet(viewsets.ModelViewSet):
     queryset = MovieSession.objects.all()
     serializer_class = MovieSessionSerializer
     def get_queryset(self):
-        queryset = MovieSession.objects.select_related("movie", "cinema_hall").prefetch_related("tickets")
+
+        queryset = MovieSession.objects.select_related(
+            "movie", "cinema_hall"
+        ).prefetch_related("tickets")
         movie = self.request.GET.get("movie")
         date = self.request.GET.get("date")
         if movie:
@@ -85,7 +88,6 @@ class MovieSessionViewSet(viewsets.ModelViewSet):
         if self.action == "retrieve":
             return MovieSessionDetailSerializer
         return MovieSessionSerializer
-
 
 
 class OrderPagination(PageNumberPagination):
