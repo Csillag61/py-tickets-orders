@@ -109,6 +109,7 @@ class TicketSerializer(serializers.ModelSerializer):
         model = Ticket
         fields = ("id", "row", "seat", "movie_session")
 
+
 class TicketCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
@@ -145,6 +146,7 @@ class OrderSerializer(serializers.ModelSerializer):
         model = Order
         fields = ("id", "tickets", "created_at")
 
+
 class OrderCreateSerializer(serializers.ModelSerializer):
     tickets = TicketCreateSerializer(many=True)
 
@@ -161,6 +163,8 @@ class OrderCreateSerializer(serializers.ModelSerializer):
         return order
 
     def get_queryset(self):
-        queryset = MovieSession.objects.select_related("movie", "cinema_hall").prefetch_related("tickets")
+        queryset = MovieSession.objects.select_related(
+            "movie", "cinema_hall"
+        ).prefetch_related("tickets")
         # ...filters...
         return queryset
