@@ -92,8 +92,9 @@ from cinema.serializers import OrderSerializer
 
 class OrderPagination(PageNumberPagination):
     page_size = 1
-    page_size_query_param = 'page_size'
+    page_size_query_param = "page_size"
     max_page_size = 100
+
 
 class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
@@ -101,4 +102,6 @@ class OrderViewSet(viewsets.ModelViewSet):
     pagination_class = OrderPagination
 
     def get_queryset(self):
-        return Order.objects.filter(user=self.request.user).order_by('-created_at')
+        return Order.objects \
+            .filter(user=self.request.user) \
+            .order_by("-created_at")
