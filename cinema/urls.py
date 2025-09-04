@@ -7,6 +7,7 @@ from cinema.views import (
     CinemaHallViewSet,
     MovieViewSet,
     MovieSessionViewSet,
+    OrderViewSet,
 )
 
 router = routers.DefaultRouter()
@@ -15,7 +16,7 @@ router.register("actors", ActorViewSet)
 router.register("cinema_halls", CinemaHallViewSet)
 router.register("movies", MovieViewSet)
 router.register("movie_sessions", MovieSessionViewSet)
-from cinema.views import OrderViewSet
+
 router.register(
     "orders",
     OrderViewSet,
