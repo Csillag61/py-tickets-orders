@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
-from cinema.serializers import OrderSerializer
+from cinema.serializers import OrderSerializer, OrderCreateSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from cinema.models import Genre, Actor, CinemaHall, Movie, MovieSession, Order
 from rest_framework import filters
@@ -70,7 +70,7 @@ class MovieSessionViewSet(viewsets.ModelViewSet):
     queryset = MovieSession.objects.all()
     serializer_class = MovieSessionSerializer
     def get_queryset(self):
-        queryset = MovieSession.objects.all()
+        queryset = MovieSession.objects.select_related("movie", "cinema_hall").prefetch_related("tickets")
         movie = self.request.GET.get("movie")
         date = self.request.GET.get("date")
         if movie:
@@ -95,9 +95,13 @@ class OrderPagination(PageNumberPagination):
 
 
 class OrderViewSet(viewsets.ModelViewSet):
-    serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
     pagination_class = OrderPagination
+
+    def get_serializer_class(self):
+        if self.action == "create":
+            return OrderCreateSerializer
+        return OrderSerializer
 
     def get_queryset(self):
         return Order.objects \
