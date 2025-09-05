@@ -95,9 +95,10 @@ class Ticket(models.Model):
             )
             if not (1 <= ticket_attr_value <= count_attrs):
                 raise ValidationError({
-                    ticket_attr_name:
+                    ticket_attr_name: (
                         f"{ticket_attr_name.capitalize()} number must be in available "
                         f"range: (1, {count_attrs})"
+                    )
                 })
 
     def save(
