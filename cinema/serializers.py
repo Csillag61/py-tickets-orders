@@ -161,10 +161,3 @@ class OrderCreateSerializer(serializers.ModelSerializer):
         for ticket_data in tickets_data:
             Ticket.objects.create(order=order, **ticket_data)
         return order
-
-    def get_queryset(self):
-        queryset = MovieSession.objects.select_related(
-            "movie", "cinema_hall"
-        ).prefetch_related("tickets")
-        # ...filters...
-        return queryset
